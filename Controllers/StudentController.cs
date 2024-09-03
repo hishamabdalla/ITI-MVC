@@ -22,22 +22,28 @@ namespace MVC_Lab1.Controllers
         {
             _context.Students.Add(student);
             _context.SaveChanges();
-            return Content("Added");
+            return RedirectToAction("Index");
         }
         public IActionResult Delete(int id)
         {
             var student = _context.Students.FirstOrDefault(x => x.Id == id);
-            _context.Students.Remove(student);
-            _context.SaveChanges();
-            return Content("Delete");
+            if (student != null) {
+                _context.Students.Remove(student);
+                _context.SaveChanges();
+            }
+           return RedirectToAction("Index");
         }
 
-        public IActionResult Update(Student student)
+        public IActionResult Update(int Id,Student Request)
         {
-            _context.Students.Update(student);
+            Student DbStudent = _context.Students.SingleOrDefault(x => x.Id==Id);
+            DbStudent.Name=Request.Name;
+            DbStudent.Address=Request.Address;
+
+            _context.Students.Update(DbStudent);
             _context.SaveChanges();
 
-            return Content("Updated");
+            return RedirectToAction("Index");
         }
 
        

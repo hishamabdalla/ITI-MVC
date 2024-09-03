@@ -1,0 +1,23 @@
+﻿@model List<Department>
+
+<table class="table table-bordered table-hover">
+    <tr>
+        <th>Department Id</th>
+        <th>Department Name</th>
+        <th>Manger Name</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Name</td>
+            <td>@item.MangerName</td>
+            <td>
+                <a href="/Department/Details/@item.Id" class="btn btn-danger">Details</a>
+                <a href="/Department/Delete/@item.Id" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Department?');">Delete</a>
+            </td>
+
+        </tr>
+    }
+</table>

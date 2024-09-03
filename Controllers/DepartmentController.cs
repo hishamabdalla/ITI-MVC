@@ -10,12 +10,12 @@ namespace MVC_Lab1.Controllers
 
         public IActionResult Index()
         {
-            var departments = _context.Departments.ToList();
-            return View(departments);
+            List<Department> departments = _context.Departments.ToList();
 
+            return View(departments); 
         }
 
-        public IActionResult GetDepartment(int id)
+        public IActionResult Details(int id)
         {
             var departments = _context.Departments.FirstOrDefault(x => x.Id == id);
             return View(departments);
@@ -24,7 +24,7 @@ namespace MVC_Lab1.Controllers
         {
             var res = _context.Departments.Add(dept);
             _context.SaveChanges();
-            return Content("department added");
+            return RedirectToAction("Index");
         }
 
         public IActionResult Delete(int Id)
@@ -32,15 +32,20 @@ namespace MVC_Lab1.Controllers
             var departments = _context.Departments.FirstOrDefault(x => x.Id == Id);
             _context.Departments.Remove(departments);
             _context.SaveChanges();
-            return Content("department removed");
+            return RedirectToAction("Index");
         }
 
-        public IActionResult Update(Department dept)
+        public IActionResult Update(int Id,Department Request)
         {
-            _context.Departments.Update(dept);
+
+            Department department = _context.Departments.SingleOrDefault(x => x.Id == Id);
+            department.Name = Request.Name;
+            department.MangerName = Request.MangerName;
+
+            _context.Departments.Update(department);
             _context.SaveChanges();
 
-            return Content("Department Updated");
+            return RedirectToAction("Index");
         }
     }
 }

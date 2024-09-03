@@ -1,7 +1,10 @@
 ﻿@model List<Student>
 
-<table class="table table-bordered">
+<a href="/Department/Index" class="btn btn-danger">Go To Departments</a>
+
+<table class="table table-bordered table-hover">
     <tr>
+        <th>Student Id</th>
         <th>Student Name</th>
         <th>Address</th>
     </tr>
@@ -9,11 +12,13 @@
     @foreach (var item in Model)
     {
         <tr>
+            <td>@item.Id</td>
             <td>@item.Name</td>
             <td>@item.Address</td>
-            <td> <a href="/Student/Details/@item.Id" class="btn btn-primary">Details</a></td>
-            
-              
+            <td> 
+                <a href="/Student/Details/@item.Id" class="btn btn-danger">Details</a>
+                <a href="/Student/Delete/@item.Id" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Trainee?');">Delete</a>
+            </td>
 
         </tr>
     }
