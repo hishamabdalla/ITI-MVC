@@ -1,12 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVC_Lab1.Models;
+using Newtonsoft.Json.Linq;
+using System.ComponentModel.DataAnnotations;
 
 namespace MVC_Lab1.Controllers
 {
     public class StudentController : Controller
     {
         ITIEntity _context=new ITIEntity();
+
+        //Unique Phone
+        public IActionResult UniquePhone(string Phone)
+        {
+            var IsUnique=_context.Students.Any(s=>s.Phone==Phone);
+            if (!IsUnique)
+            {
+                return Json(true);
+            }
+            return Json(false);
+        }
+        public IActionResult UniqueEmail(string Email)
+        {
+            var IsUnique = _context.Students.Any(s => s.Email == Email);
+
+            if (!IsUnique)
+            {
+                return Json(true);
+            }
+            return Json(false);
+        }
         public IActionResult Index()
         {
             //Get All Trainees
@@ -56,13 +79,20 @@ namespace MVC_Lab1.Controllers
         public IActionResult Update(int Id,Student Request)
         {
             Student DbStudent = _context.Students.SingleOrDefault(x => x.Id==Id);
-            DbStudent.Name=Request.Name;
-            DbStudent.Address=Request.Address;
-
-            _context.Students.Update(DbStudent);
-            _context.SaveChanges();
-
-            return RedirectToAction("Index");
+           
+             if (ModelState.IsValid)
+             {
+                DbStudent.Name = Request.Name;
+                DbStudent.Address = Request.Address;
+                DbStudent.DeptId = Request.DeptId;
+                DbStudent.Phone = Request.Phone;
+                DbStudent.Email = Request.Email;
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+             }
+           return RedirectToAction("Create");
+           
+           
         }
 
        

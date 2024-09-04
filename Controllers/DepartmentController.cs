@@ -43,8 +43,6 @@ namespace MVC_Lab1.Controllers
         public IActionResult Update(int Id)
         {
             var department = _context.Departments.FirstOrDefault(s => s.Id == Id);
-           
-
             return View(department);
 
         }
