@@ -20,6 +20,12 @@ namespace MVC_Lab1.Controllers
             var departments = _context.Departments.FirstOrDefault(x => x.Id == id);
             return View(departments);
         }
+        public IActionResult Create()
+        {
+            
+            return View();
+        }
+        [HttpPost]
         public IActionResult Create(Department dept)
         {
             var res = _context.Departments.Add(dept);
@@ -34,7 +40,16 @@ namespace MVC_Lab1.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+        public IActionResult Update(int Id)
+        {
+            var department = _context.Departments.FirstOrDefault(s => s.Id == Id);
+           
 
+            return View(department);
+
+        }
+
+        [HttpPost]
         public IActionResult Update(int Id,Department Request)
         {
 
