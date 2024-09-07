@@ -4,6 +4,14 @@ namespace MVC_Lab1.Models
 {
     public class ITIEntity : DbContext
     {
+        public ITIEntity()
+        {
+        }
+
+        public ITIEntity(DbContextOptions<ITIEntity> options)
+        : base(options)
+        {
+        }
         public DbSet<Student> Students { get; set; }
         public DbSet<Department> Departments { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -1,3 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+using MVC_Lab1.Models;
+using MVC_Lab1.Repository;
+using System.Configuration;
+
 namespace MVC_Lab1
 {
     public class Program
@@ -8,7 +13,9 @@ namespace MVC_Lab1
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddDbContext<ITIEntity>(option=>option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

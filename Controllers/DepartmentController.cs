@@ -1,23 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVC_Lab1.Models;
+using MVC_Lab1.Repository;
 
 namespace MVC_Lab1.Controllers
 {
     public class DepartmentController : Controller
     {
-        ITIEntity _context = new ITIEntity();
+        private readonly IDepartmentRepository deptRepo;
+
+        public DepartmentController(IDepartmentRepository DeptRepo)
+        {
+            deptRepo = DeptRepo;
+        }
 
         public IActionResult Index()
         {
-            List<Department> departments = _context.Departments.ToList();
+            List<Department> departments = deptRepo.GetAll().ToList();
 
             return View(departments); 
         }
 
         public IActionResult Details(int id)
         {
-            var departments = _context.Departments.FirstOrDefault(x => x.Id == id);
+            var departments = deptRepo.GetById(id);
             return View(departments);
         }
         public IActionResult Create()
@@ -28,21 +34,18 @@ namespace MVC_Lab1.Controllers
         [HttpPost]
         public IActionResult Create(Department dept)
         {
-            var res = _context.Departments.Add(dept);
-            _context.SaveChanges();
+            deptRepo.Create(dept);
             return RedirectToAction("Index");
         }
 
         public IActionResult Delete(int Id)
         {
-            var departments = _context.Departments.FirstOrDefault(x => x.Id == Id);
-            _context.Departments.Remove(departments);
-            _context.SaveChanges();
+           deptRepo.Delete(Id);
             return RedirectToAction("Index");
         }
         public IActionResult Update(int Id)
         {
-            var department = _context.Departments.FirstOrDefault(s => s.Id == Id);
+            var department = deptRepo.GetById(Id);
             return View(department);
 
         }
@@ -51,13 +54,7 @@ namespace MVC_Lab1.Controllers
         public IActionResult Update(int Id,Department Request)
         {
 
-            Department department = _context.Departments.SingleOrDefault(x => x.Id == Id);
-            department.Name = Request.Name;
-            department.MangerName = Request.MangerName;
-
-            _context.Departments.Update(department);
-            _context.SaveChanges();
-
+           deptRepo.Update(Request);
             return RedirectToAction("Index");
         }
     }

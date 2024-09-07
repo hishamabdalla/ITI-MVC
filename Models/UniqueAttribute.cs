@@ -5,7 +5,12 @@ namespace MVC_Lab1.Models
 {
     public class UniqueAttribute : ValidationAttribute
     {
-        ITIEntity _context = new ITIEntity();
+        private readonly ITIEntity _context;
+
+        public UniqueAttribute(ITIEntity context)
+        {
+            this._context = context;
+        }
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             var IsUnique = _context.Students.Any(s => s.Email == value);

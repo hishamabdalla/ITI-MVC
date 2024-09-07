@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVC_Lab1.Models;
+using MVC_Lab1.Repository;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,12 +9,19 @@ namespace MVC_Lab1.Controllers
 {
     public class StudentController : Controller
     {
-        ITIEntity _context=new ITIEntity();
+        private readonly IStudentRepository studentRepo;
+        private readonly IDepartmentRepository deptRepo;
+
+        public StudentController(IStudentRepository StudentRepo,IDepartmentRepository DeptRepo)
+        {
+            studentRepo = StudentRepo;
+            deptRepo = DeptRepo;
+        }
 
         //Unique Phone
         public IActionResult UniquePhone(string Phone)
         {
-            var IsUnique=_context.Students.Any(s=>s.Phone==Phone);
+            var IsUnique=studentRepo.FindPhone(Phone);
             if (!IsUnique)
             {
                 return Json(true);
@@ -22,7 +30,7 @@ namespace MVC_Lab1.Controllers
         }
         public IActionResult UniqueEmail(string Email)
         {
-            var IsUnique = _context.Students.Any(s => s.Email == Email);
+            var IsUnique = studentRepo.FindEmail(Email);
 
             if (!IsUnique)
             {
@@ -33,18 +41,18 @@ namespace MVC_Lab1.Controllers
         public IActionResult Index()
         {
             //Get All Trainees
-            var StudentsModel = _context.Students.Include(s=>s.Department).ToList();
+            var StudentsModel =studentRepo.GetAllWithDepartment();
 
             return View(StudentsModel);
         }
         public IActionResult Details(int id)
         {
-            var Student = _context.Students.FirstOrDefault(x => x.Id == id);
+            var Student = studentRepo.GetById(id);
             return View(Student);
         }
         public IActionResult Create()
         {
-            ViewBag.DeptList=_context.Departments.ToList();
+            ViewBag.DeptList = deptRepo.GetAll();
             return View();
         }
         [HttpPost]
@@ -52,25 +60,20 @@ namespace MVC_Lab1.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Students.Add(student);
-                _context.SaveChanges();
+                studentRepo.Create(student);
                 return RedirectToAction("Index");
             }
            return RedirectToAction("Create");
         }
         public IActionResult Delete(int id)
         {
-            var student = _context.Students.FirstOrDefault(x => x.Id == id);
-            if (student != null) {
-                _context.Students.Remove(student);
-                _context.SaveChanges();
-            }
+            studentRepo.Delete(id);
            return RedirectToAction("Index");
         }
         public IActionResult Update(int Id)
         {
-            var student= _context.Students.FirstOrDefault(s=>s.Id == Id);
-            ViewBag.DeptList = _context.Departments.ToList();
+            var student= studentRepo.GetById(Id);
+            ViewBag.DeptList = deptRepo.GetAll();
 
             return View(student);
 
@@ -78,16 +81,11 @@ namespace MVC_Lab1.Controllers
         [HttpPost]
         public IActionResult Update(int Id,Student Request)
         {
-            Student DbStudent = _context.Students.SingleOrDefault(x => x.Id==Id);
+           
            
              if (ModelState.IsValid)
              {
-                DbStudent.Name = Request.Name;
-                DbStudent.Address = Request.Address;
-                DbStudent.DeptId = Request.DeptId;
-                DbStudent.Phone = Request.Phone;
-                DbStudent.Email = Request.Email;
-                _context.SaveChanges();
+               studentRepo.Update(Request);
                 return RedirectToAction("Index");
              }
            return RedirectToAction("Create");
