@@ -19,18 +19,18 @@ namespace MVC_Lab1.Controllers
         }
 
         //Unique Phone
-        public IActionResult UniquePhone(string Phone)
+        public IActionResult UniquePhone(string Phone,int Id)
         {
-            var IsUnique=studentRepo.FindPhone(Phone);
+            var IsUnique=studentRepo.FindPhone(Phone,Id);
             if (!IsUnique)
             {
                 return Json(true);
             }
             return Json(false);
         }
-        public IActionResult UniqueEmail(string Email)
+        public IActionResult UniqueEmail(string Email, int Id)
         {
-            var IsUnique = studentRepo.FindEmail(Email);
+            var IsUnique = studentRepo.FindEmail(Email,Id);
 
             if (!IsUnique)
             {
@@ -81,8 +81,7 @@ namespace MVC_Lab1.Controllers
         [HttpPost]
         public IActionResult Update(int Id,Student Request)
         {
-           
-           
+
              if (ModelState.IsValid)
              {
                studentRepo.Update(Request);

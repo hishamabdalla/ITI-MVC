@@ -49,14 +49,14 @@ namespace MVC_Lab1.Repository
             _context.SaveChanges();
         }
 
-        public bool FindPhone(string phone)
+        public bool FindPhone(string phone,int Id)
         {
-            return _context.Students.Any(s => s.Phone == phone);
+            return GetAll().Any(s => s.Phone == phone && s.Id!=Id);
         }
 
-        public bool FindEmail(string email)
+        public bool FindEmail(string email,int Id)
         {
-            return _context.Students.Any(s => s.Email == email);
+            return GetAll().Any(s => s.Email == email && s.Id != Id);
         }
     }
 }
