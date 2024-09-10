@@ -13,16 +13,18 @@ namespace MVC_Lab1.Repository
       
         public IEnumerable<Department> GetAll()
         {
-            return _context.Departments.ToList();
+            
+            return _context.Departments.Where(w=>w.States==true).ToList();
         }
 
         public Department GetById(int id)
         {
-            return _context.Departments.FirstOrDefault(s => s.Id == id);
+            return _context.Departments.Where(w => w.States == true).FirstOrDefault(s => s.Id == id);
         }
 
         public void Create(Department entity)
         {
+            entity.States = true;
             _context.Departments.Add(entity);
             _context.SaveChanges();
         }
@@ -30,16 +32,13 @@ namespace MVC_Lab1.Repository
         public void Delete(int id)
         {
             var department = GetById(id);
-            if (department != null)
-            {
-                _context.Departments.Remove(department);
-                _context.SaveChanges();
-
-            }
+           department.States=false;
+            _context.SaveChanges();
 
         }
         public void Update(Department entity)
         {
+            entity.States=true;
             _context.Departments.Update(entity);
             _context.SaveChanges();
 

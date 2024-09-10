@@ -26,6 +26,7 @@ namespace MVC_Lab1.Models
         public string Email { get; set; }
 
         [ForeignKey("Department")]
+        [Display(Name ="Department Name")]
         public int? DeptId { get; set; }
 
         public virtual Department? Department { get; set; }

@@ -7,6 +7,7 @@
 
         public string MangerName { get; set; }
 
+        public bool States { get; set; }
         public List<Student> Students { get; set; }
 
     }

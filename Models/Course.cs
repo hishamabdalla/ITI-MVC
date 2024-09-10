@@ -13,6 +13,7 @@ namespace MVC_Lab1.Models
         public int Duration { get; set; }
 
         [ForeignKey("Department")]
+        [Display(Name = "Department Name")]
         public int? DepartmentID { get; set; }
         public Department? Department { get; set; }
 

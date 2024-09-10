@@ -27,7 +27,7 @@
     <div class="form-group">
         <label asp-for="DeptId"></label>
         <select asp-for="DeptId" asp-items="@(new SelectList(ViewBag.DeptList, "Id", "Name"))" class="form-control">
-            <option value="" >Select Department</option>
+            <option value="">Select Department</option>
         </select>
     </div>
 
