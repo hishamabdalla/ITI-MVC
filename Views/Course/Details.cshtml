@@ -1,0 +1,11 @@
+﻿@model Course
+
+<div class="card" style="width:350px">
+
+    <div class="card-body">
+        <h4 class="card-title">@Model.Name</h4>
+        <p class="card-text">@Model.Duration - @Model.Department.Name</p>
+        <a href="/Student/Index" class="btn btn-primary">Return To List</a>
+
+    </div>
+</div>

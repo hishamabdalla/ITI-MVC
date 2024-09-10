@@ -15,7 +15,8 @@ namespace MVC_Lab1
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<ITIEntity>(option=>option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped<IStudentRepository, StudentRepository>();
-            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>(); 
+            builder.Services.AddScoped<ICourseRepository,CourseRepository>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

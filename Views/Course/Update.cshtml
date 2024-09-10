@@ -1,0 +1,29 @@
+﻿@model Course
+<form asp-action="Update" asp-controller="Course" asp-route-Id="@Model.Id" method="post">
+    <div asp-validation-summary="All"></div>
+    <input asp-for="Id" type="hidden" class="form-control">
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Duration"></label>
+        <input asp-for="Duration" class="form-control ">
+        <span asp-validation-for="Duration" class="text-danger"></span>
+
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DepartmentID"></label>
+        <select asp-for="DepartmentID" asp-items="@(new SelectList(ViewBag.DeptList, "Id", "Name"))" class="form-control">
+            <option value="">Select Department</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

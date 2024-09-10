@@ -13,12 +13,13 @@ namespace MVC_Lab1.Models
         public string Name { get; set; }
         [Required]
         public string Address { get; set; }
+
+
         [Required]
         [Remote("UniquePhone", "Student", AdditionalFields = "Id", ErrorMessage = "Phone Must be Unique" )]
         [RegularExpression("^[0-9]*$", ErrorMessage = "Please enter numbers only.")]
-        
-
         public string Phone { get; set; }
+
         [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Please enter a valid email address.")]
         [Remote("UniqueEmail", "Student", AdditionalFields = "Id", ErrorMessage = "Email Must be Unique" )]
         [Required]
